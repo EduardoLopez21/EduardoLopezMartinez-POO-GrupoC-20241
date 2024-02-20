@@ -86,6 +86,7 @@ public class Tarea3 {
         System.out.println("");
         System.out.println("***FOURTH RECTANGLE***");
         FourthRectangle.getRectangleInfo();
+        
 
     }
 
