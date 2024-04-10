@@ -10,17 +10,17 @@ public class Sistema {
 
        System.out.println("Prueba de que funciona el Cliente: ");
 
-       Cliente cliente = new Cliente("Juan", "Rivera", "443390");
+       Cliente cliente = new Cliente("Pablito", "Tellez", "443390");
        System.out.println(cliente.toString());
 
        System.out.println("Prueba de que funciona el Asistente: ");
 
-       Asistente asistente = new Asistente("Geovanny", "Pérez", "443567", 43.7, "FRED677GG");
+       Asistente asistente = new Asistente("Milka", "Tilina", "44356217", 46.1, "FdADADA");
        System.out.println(asistente.toString());
 
        System.out.println("Prueba de que funciona el Gerente: ");
 
-       Gerente gerente = new Gerente("Hugo", "Garcia", "4474689", 100, "GHFUJJG877", "HUJHHIHJK88");
+       Gerente gerente = new Gerente("Melissa", "Garcia", "2321312", 40, "G87DADSD7", "DOALDAWD99");
         System.out.println(gerente.toString());
     }
     
