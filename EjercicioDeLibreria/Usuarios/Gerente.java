@@ -6,8 +6,8 @@ public class Gerente extends Usuario{
     private double sueldo;
     private String rfc, ine;
     
-    public Gerente(String nombre, String apellido, String telefono, double sueldo, String rfc, String ine) {
-        super(nombre, apellido, telefono, Rol.GERENTE);
+    public Gerente(String nombre, String apellido, String telefono, double sueldo, String rfc, String ine, String nombreUsuario, String contraseña) {
+        super(nombre, apellido, telefono, Rol.GERENTE, nombreUsuario, contraseña);
         this.sueldo = sueldo;
         this.ine = ine;
         this.rfc = rfc;

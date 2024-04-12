@@ -7,8 +7,8 @@ public class Cliente extends Usuario {
     private LocalDate fechaRegistro; //Este tipo de datos manejan fechas (local)
     //retorna la fecha de hoy 2024-04-09
     
-    public Cliente (String nombre, String apellido, String telefono) {
-        super(nombre, apellido, telefono, Rol.CLIENTE);
+    public Cliente (String nombre, String apellido, String telefono, String nombreUsuario, String contraseña) {
+        super(nombre, apellido, telefono, Rol.CLIENTE, nombreUsuario, contraseña);
         this.fechaRegistro = LocalDate.now(); //accede a la fecha actual
     }
 

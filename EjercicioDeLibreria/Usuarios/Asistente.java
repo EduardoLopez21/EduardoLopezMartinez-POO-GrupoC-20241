@@ -10,8 +10,8 @@ public class Asistente extends Usuario{
     private double sueldo;
     private String rfc;
 
-    public Asistente(String nombre, String apellido, String telefono, double sueldo, String rfc) {
-        super(nombre, apellido, telefono, Rol.ASISTENTE);
+    public Asistente(String nombre, String apellido, String telefono, double sueldo, String rfc, String nombreUsuario, String contraseña) {
+        super(nombre, apellido, telefono, Rol.ASISTENTE, nombreUsuario, contraseña);
         this.fechaInicio = LocalDate.now();
         this.sueldo = sueldo;
         this.rfc = rfc;
