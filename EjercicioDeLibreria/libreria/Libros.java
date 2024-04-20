@@ -7,16 +7,16 @@ public class Libros {
     private String autor;
     private String fechaDePublicacion;
 
-    
+    // Constructor
     public Libros(String titulo, String autor, String fechaDePublicacion) {
-        this.idLibros = contadorIdLibros++; 
+        this.idLibros = contadorIdLibros++; // Asignamos un ID único cada vez que se crea un libro
         this.titulo = titulo;
         this.autor = autor;
         this.fechaDePublicacion = fechaDePublicacion;
     }
 
 
-   
+    // Getters
     public int getIdLibros() {
         return idLibros;
     }

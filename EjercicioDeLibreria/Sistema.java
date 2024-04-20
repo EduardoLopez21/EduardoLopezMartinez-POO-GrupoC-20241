@@ -2,7 +2,7 @@ import libreria.Menu;
 
 public class Sistema {
     public static void main(String[] args) {
-       // System.out.println(Rol.ASISTENTE);
+
 
         Menu menu = new Menu();
         menu.inicioSesion();

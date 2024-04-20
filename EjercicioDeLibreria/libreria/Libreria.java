@@ -5,66 +5,85 @@ import Usuarios.Cliente;
 import Usuarios.Gerente;
 import Usuarios.Usuario;
 import Usuarios.utils.Rol;
+import com.sun.nio.sctp.AbstractNotificationHandler;
 
 import javax.xml.transform.Source;
 import java.sql.SQLOutput;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.List;
+import java.util.*;
 
 public class Libreria {
-    private ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+    // private ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
     private List<Libros> librosRegistrados;
+    HashMap<Rol, ArrayList<Usuario>> usuarios = new HashMap<Rol, ArrayList<Usuario>>();
 
     public Libreria() {
-        Asistente asistente = new Asistente("Juan", "Rivera", "443831893122", 15000, "RUJU231231", "LOME3892893", "juan123", "12345");
-        usuarios.add(asistente);
+        usuarios.put(Rol.CLIENTE, new ArrayList<>());
+        usuarios.put(Rol.ASISTENTE, new ArrayList<>());
+        usuarios.put(Rol.GERENTE, new ArrayList<>());
+
+        // Agregar usuarios de ejemplo
+        Asistente asistente = new Asistente("Juan", "Rivera", "443831893122", 15000, "RUJU231231", "juan123", "12345");
+        usuarios.get(Rol.ASISTENTE).add(asistente);
 
         Gerente gerente = new Gerente("Lalo", "Lopez", "4471178990", 20000, "LOME121590A1", "L2919OOME", "Lalito12", "12lolo");
-        usuarios.add(gerente);
+        usuarios.get(Rol.GERENTE).add(gerente);
 
         this.librosRegistrados = new ArrayList<>();
     }
 
 
     public Usuario verificarInicioSesion(String nombreUsuario, String contraseña) {
-        for (Usuario usuarios : usuarios) {
-            if (usuarios.getNombreUsuario().equals(nombreUsuario)) {
-                if (usuarios.getContraseña().equals(contraseña)) {
-                    return usuarios;
+        for (ArrayList<Usuario> listaUsuarios : usuarios.values()) {
+            for (Usuario usuario : listaUsuarios) {
+                if (usuario.getNombreUsuario().equals(nombreUsuario) && usuario.getContraseña().equals(contraseña)) {
+                    return usuario;
                 }
-                return null;
             }
         }
         return null;
     }
 
-    public void registrarClientes() {
+
+    private ArrayList<String> obtenerDatosComun(Rol rol) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\n Registrando Cliente");
-        System.out.println("Ingresar los siguientes datos para continuar");
-
-        System.out.print("Ingresa el nombre: ");
+        ArrayList<String> datosComun = new ArrayList<String>();
+        String rolUsuario = rol == Rol.CLIENTE ? "CLIENTE" : rol == Rol.ASISTENTE ? "Asistente" : "Gerente";
+        System.out.println(String.format("Bienvenido al registro del %s", rolUsuario));
+        System.out.print("\n Ingresa los siguientes datos para continuar");
+        System.out.print("\n Ingresa el nombre: ");
         String nombre = scanner.nextLine();
-
-        System.out.print("Ingresa los apellidos: ");
+        System.out.print("Ingresa los Apellidos: ");
         String apellido = scanner.nextLine();
-
         String telefono = registrarTelefonoUsuario();
         String nombreUsuario = registrarNombreUsuario();
-
-        System.out.print("Ingresa el password: ");
+        System.out.print("Ingresa tu contraseña: ");
         String contraseña = scanner.nextLine();
 
+        datosComun.addAll(Arrays.asList(nombre, apellido, telefono, nombreUsuario, contraseña));
+        return datosComun;
+    }
+
+    public void registrarClientes() {
+        ArrayList<String> datosComun = obtenerDatosComun(Rol.CLIENTE);
+        String nombre = datosComun.get(0);
+        String apellido = datosComun.get(1);
+        String telefono = datosComun.get(2);
+        String nombreUsuario = datosComun.get(3);
+        String contraseña = datosComun.get(4);
+
         Cliente cliente = new Cliente(nombre, apellido, telefono, nombreUsuario, contraseña);
-        usuarios.add(cliente);
-        System.out.println("\n¡Cliente registrado exitosamente!\n");
+
+        if (!usuarios.containsKey(Rol.CLIENTE)) {
+            usuarios.put(Rol.CLIENTE, new ArrayList<Usuario>());
+        }
+        usuarios.get(Rol.CLIENTE).add(cliente);
+        System.out.println("\n Cliente registrado exitosamente...");
 
     }
 
     public void mostrarClientes() {
         System.out.println("\n Clientes en la Biblioteca");
-        for (Usuario usuario : usuarios) {
+        for (Usuario usuario : usuarios.get(Rol.CLIENTE)) {
             if (usuario.getRol() == Rol.CLIENTE) {
                 Cliente cliente = (Cliente) usuario;
                 System.out.println(cliente.toString());
@@ -76,16 +95,12 @@ public class Libreria {
     public void registrarAsistentes() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\n Registrando Asistente");
-        System.out.println("Ingresar los siguientes datos para continuar");
-
-        System.out.print("Ingresa el nombre: ");
-        String nombre = scanner.nextLine();
-
-        System.out.print("Ingresa los apellidos: ");
-        String apellido = scanner.nextLine();
-
-
-        String telefono = registrarTelefonoUsuario();
+        ArrayList<String> datosComun = obtenerDatosComun(Rol.ASISTENTE);
+        String nombre = datosComun.get(0);
+        String apellido = datosComun.get(1);
+        String telefono = datosComun.get(2);
+        String nombreUsuario = datosComun.get(3);
+        String contraseña = datosComun.get(4);
 
         System.out.print("Ingresa el sueldo: ");
         double sueldo = scanner.nextDouble();
@@ -94,23 +109,19 @@ public class Libreria {
         System.out.print("Ingresa el RFC: ");
         String rfc = scanner.nextLine();
 
-        System.out.print("Ingresa la INE: ");
-        String INE = scanner.nextLine();
 
-        String nombreUsuario = registrarNombreUsuario();
-
-        System.out.print("Ingresa el password: ");
-        String contraseña = scanner.nextLine();
-
-        Asistente asistente = new Asistente(nombre, apellido, telefono, sueldo, rfc, INE, nombreUsuario, contraseña);
-        usuarios.add(asistente);
-        System.out.print("\n¡Cliente registrado exitosamente!\n");
+        Asistente asistente = new Asistente(nombre, apellido, telefono, sueldo, rfc, nombreUsuario, contraseña);
+        if (!usuarios.containsKey(Rol.ASISTENTE)) {
+            usuarios.put(Rol.ASISTENTE, new ArrayList<Usuario>());
+        }
+        usuarios.get(Rol.ASISTENTE).add(asistente);
+        System.out.println("\n Cliente registrado exitosamente...");
 
     }
 
     public void mostrarAsistentes() {
         System.out.println("\n Asistentes en la Biblioteca");
-        for (Usuario usuario : usuarios) {
+        for (Usuario usuario : usuarios.get(Rol.ASISTENTE)) {
             if (usuario.getRol() == Rol.ASISTENTE) {
                 Asistente asistente = (Asistente) usuario;
                 System.out.println(asistente.toString());
@@ -120,16 +131,14 @@ public class Libreria {
 
     public void registrarGerente() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\n Registrando Gerente");
+        System.out.println("\n Registrando Gerente.....");
         System.out.println("Ingresar los siguientes datos para continuar");
-
-        System.out.print("Ingresa el nombre: ");
-        String nombre = scanner.nextLine();
-
-        System.out.print("Ingresa los apellidos: ");
-        String apellido = scanner.nextLine();
-
-        String telefono = registrarTelefonoUsuario();
+        ArrayList<String> datosComun = obtenerDatosComun(Rol.ASISTENTE);
+        String nombre = datosComun.get(0);
+        String apellido = datosComun.get(1);
+        String telefono = datosComun.get(2);
+        String nombreUsuario = datosComun.get(3);
+        String contraseña = datosComun.get(4);
 
         System.out.print("Ingresa el sueldo: ");
         double sueldo = scanner.nextDouble();
@@ -141,20 +150,18 @@ public class Libreria {
         System.out.print("Ingresa la INE: ");
         String INE = scanner.nextLine();
 
-        String nombreUsuario = registrarNombreUsuario();
-
-        System.out.print("Ingresa el password: ");
-        String contraseña = scanner.nextLine();
-
         Gerente gerente = new Gerente(nombre, apellido, telefono, sueldo, rfc, INE, nombreUsuario, contraseña);
-        usuarios.add(gerente);
-        System.out.println("\n¡Cliente registrado exitosamente!\n");
-
+        if (!usuarios.containsKey(Rol.GERENTE)) {
+            usuarios.put(Rol.GERENTE, new ArrayList<Usuario>());
+        }
+        usuarios.get(Rol.GERENTE).add(gerente);
+        System.out.println("\n Cliente registrado exitosamente...");
     }
+
 
     public void mostrarGerente() {
         System.out.println("\n Asistentes en la Biblioteca");
-        for (Usuario usuario : usuarios) {
+        for (Usuario usuario : usuarios.get(Rol.GERENTE)) {
             if (usuario.getRol() == Rol.GERENTE) {
                 Gerente gerente = (Gerente) usuario;
                 System.out.println(gerente.toString());
@@ -172,15 +179,18 @@ public class Libreria {
             telefono = scanner.nextLine();
 
             telefonoExistente = false;
-            for (Usuario usuario : usuarios) {
-                if (usuario.getTelefono().equals(telefono)) {
-                    telefonoExistente = true;
-                    break;
+            for (ArrayList<Usuario> listaUsuarios : usuarios.values()) {
+                for (Usuario usuario : listaUsuarios) {
+                    if (usuario.getTelefono().equals(telefono)) {
+                        telefonoExistente = true;
+                        break;
+                    }
                 }
-            }
 
-            if (telefonoExistente) {
-                System.out.println("\n El telefono ya se encuentra registrado. Intenta de nuevo.");
+
+                if (telefonoExistente) {
+                    System.out.println("\n El telefono ya se encuentra registrado. Intenta de nuevo.");
+                }
             }
         } while (telefonoExistente);
 
@@ -197,15 +207,17 @@ public class Libreria {
             nombreUsuario = scanner.nextLine();
 
             nombreUsuarioExistente = false;
-            for (Usuario usuario : usuarios) {
-                if (usuario.getNombreUsuario().equals(nombreUsuario)) {
-                    nombreUsuarioExistente = true;
-                    break;
+            for (ArrayList<Usuario> listaUsuarios : usuarios.values()) {
+                for (Usuario usuario : listaUsuarios) {
+                    if (usuario.getNombreUsuario().equals(nombreUsuario)) {
+                        nombreUsuarioExistente = true;
+                        break;
+                    }
                 }
-            }
 
-            if (nombreUsuarioExistente) {
-                System.out.println("\n Ya existe un registro con ese nombre de usuario. Intenta de nuevo.");
+                if (nombreUsuarioExistente) {
+                    System.out.println("\n Ya existe un registro con ese nombre de usuario. Intenta de nuevo.");
+                }
             }
         } while (nombreUsuarioExistente);
 
@@ -214,50 +226,70 @@ public class Libreria {
 
 
     public void EliminarAsistente(int idAsistente) {
-        Usuario asistente = null;
-        for (Usuario usuario : usuarios) {
+        boolean encontrado = false;
+        Iterator<Usuario> iterator = usuarios.get(Rol.ASISTENTE).iterator();
+        while (iterator.hasNext()) {
+            Usuario usuario = iterator.next();
             if (usuario instanceof Asistente && ((Asistente) usuario).getId() == idAsistente) {
-                asistente = usuario;
+                iterator.remove();
+                encontrado = true;
                 break;
             }
         }
-        if (asistente != null) {
-            usuarios.remove(asistente);
-            System.out.println("\nAsistente eliminado exitosamente.");
-        } else {
-            System.out.println("\nNo se encontró ningún cliente con ese ID.");
-        }
-    }
-
-    public void EliminarCliente(int idCliente) {
-        Usuario cliente = null;
-        for (Usuario usuario : usuarios) {
-            if (usuario instanceof Cliente && ((Cliente) usuario).getId() == idCliente) {
-                cliente = usuario;
-                break;
-            }
-        }
-        if (cliente != null) {
-            usuarios.remove(cliente);
+        if (encontrado) {
             System.out.println("\nCliente eliminado exitosamente.");
         } else {
             System.out.println("\nNo se encontró ningún cliente con ese ID.");
         }
     }
 
-    public void EliminarGerente(int idGerente) {
+    public void EliminarCliente(int idCliente) {
+        boolean encontrado = false;
+        Iterator<Usuario> iterator = usuarios.get(Rol.CLIENTE).iterator();
+        while (iterator.hasNext()) {
+            Usuario usuario = iterator.next();
+            if (usuario instanceof Cliente && ((Cliente) usuario).getId() == idCliente) {
+                iterator.remove();
+                encontrado = true;
+                break;
+            }
+        }
+        if (encontrado) {
+            System.out.println("\nCliente eliminado exitosamente.");
+        } else {
+            System.out.println("\nNo se encontró ningún cliente con ese ID.");
+        }
+    }
+
+
+    public void EliminarGerente(int idGerente, String nombreUsuario) {
         Usuario gerente = null;
-        for (Usuario usuario : usuarios) {
-            if (usuario instanceof Cliente && ((Cliente) usuario).getId() == idGerente) {
+        Usuario usuarioEliminar = null;
+
+        for (Usuario usuario : usuarios.get(Rol.GERENTE)) {
+            if (usuario instanceof Gerente && usuario.getId() == idGerente) {
                 gerente = usuario;
                 break;
             }
         }
-        if (gerente != null) {
-            usuarios.remove(gerente);
+
+        if (gerente == null) {
+            System.out.println("\nNo se encontró ningún gerente con ese ID.");
+            return;
+        }
+
+        for (Usuario usuario : usuarios.values().stream().flatMap(List::stream).toList()) {
+            if (usuario.getNombreUsuario().equals(nombreUsuario)) {
+                usuarioEliminar = usuario;
+                break;
+            }
+        }
+
+        if (usuarioEliminar != null && usuarioEliminar instanceof Gerente && usuarioEliminar.getNombreUsuario().equals(nombreUsuario)) {
+            usuarios.get(Rol.GERENTE).remove(gerente);
             System.out.println("\nGerente eliminado exitosamente.");
         } else {
-            System.out.println("\nNo se encontró ningún cliente con ese ID.");
+            System.out.println("\nEl usuario no es un gerente o el nombre de usuario no coincide. No se puede eliminar al gerente.");
         }
     }
 
@@ -291,3 +323,15 @@ public class Libreria {
 
 
 }
+
+// ------------------- NOTAS DE CLASE :D ------------------
+
+
+// MODIFICACIONES PARA LOS CLIENTES
+
+//if (!usuarios.containsKey(Rol.CLIENTE)){
+//    usuarios.put(Rol.CLIENTE, new ArrayList<Usuario>());
+//       }
+//  usuarios.get(Rol.CLIENTE).add(cliente);
+
+

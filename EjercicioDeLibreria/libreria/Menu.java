@@ -10,13 +10,13 @@ import utils.UsuarioEnSesion;
 /*
 - Realizar el registro de cliente, registro de libros y consulta de clientes y libros
 - Opcional: Tratar de almacenar el usuario en sesion (UsuarioEnSesion) y verificar el comportamiento
+- Ahora tenemos que hacer todo con el HashMap y tambien ver que pedo con el login
  */
 
 public class Menu {
 
     private Libreria libreria = new Libreria();
     private Scanner scanner = new Scanner(System.in);
-
 
 
     public void inicioSesion() {
@@ -260,11 +260,14 @@ public class Menu {
 
                 case 11:
                     System.out.println("Seleccionaste Eliminar Asistente");
-                    scanner.nextLine();
-                    System.out.println("Ingresa el ID del Gerente a eliminar");
+                    Scanner scanner = new Scanner(System.in);
+                    System.out.print("Ingresa el ID del gerente que deseas eliminar: ");
                     int idGerente = scanner.nextInt();
-                    System.out.println("\n Eliminando Gerente...");
-                    libreria.EliminarGerente(idGerente);
+                    scanner.nextLine(); // Limpiar el buffer del scanner
+                    System.out.print("Ingresa el nombre de usuario del usuario que desea eliminar al gerente: ");
+                    String nombreUsuarioEliminarGerente = scanner.nextLine();
+                    libreria.EliminarGerente(idGerente, nombreUsuarioEliminarGerente);
+
                     break;
 
                 case 12:
