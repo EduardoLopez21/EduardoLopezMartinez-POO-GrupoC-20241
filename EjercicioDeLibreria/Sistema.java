@@ -8,14 +8,6 @@ public class Sistema {
         menu.inicioSesion();
 
 
-        /*
-        - Lo visto en clase hoy
-        - Registrar asistentes (gerente)
-        - Eliminar clientes, asistentes y gerentes
-        - Eliminacion de gerentes solo se puede hacer por otro gerente
-        - Listado de asistentes y gerentes
-         */
-
     }
     
 }
