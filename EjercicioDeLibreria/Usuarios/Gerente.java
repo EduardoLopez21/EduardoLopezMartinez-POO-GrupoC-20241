@@ -17,8 +17,8 @@ public class Gerente extends Usuario implements EmpleadoUtils {
     private String rfc;
     private String INE;
 
-    public Gerente(String nombre, String apellido, String telefono, double sueldo, String rfc, String INE, String nombreUsuario, String contraseña) {
-        super(nombre, apellido, telefono, Rol.GERENTE, nombreUsuario, contraseña);
+    public Gerente(String nombre, String apellido, String telefono, double sueldo, String rfc, String INE, String nombreUsuario, String contraseña, String fechaNacimiento) {
+        super(nombre, apellido, telefono, Rol.GERENTE, nombreUsuario, contraseña, fechaNacimiento);
         this.sueldo = sueldo;
         this.INE = INE;
         this.rfc = rfc;
@@ -33,31 +33,33 @@ public class Gerente extends Usuario implements EmpleadoUtils {
 
     public static void registrarGerente() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\n Registrando Gerente.....");
+        System.out.println("\nRegistrando Gerente.....");
         System.out.println("Ingresar los siguientes datos para continuar");
-        ArrayList<String> datosComun = obtenerDatosComun(Rol.ASISTENTE);
+        ArrayList<String> datosComun = DatosComun.obtenerDatosComun(Rol.GERENTE);
         String nombre = datosComun.get(0);
         String apellido = datosComun.get(1);
         String telefono = datosComun.get(2);
         String nombreUsuario = datosComun.get(3);
         String contraseña = datosComun.get(4);
+        String fechaNacimiento = datosComun.get(5);
 
         System.out.print("Ingresa el sueldo: ");
         double sueldo = scanner.nextDouble();
 
-        scanner.nextLine();
+        scanner.nextLine(); // Limpiar el buffer del Scanner
+
         System.out.print("Ingresa el RFC: ");
         String rfc = scanner.nextLine();
 
         System.out.print("Ingresa la INE: ");
         String INE = scanner.nextLine();
 
-        Gerente gerente = new Gerente(nombre, apellido, telefono, sueldo, rfc, INE, nombreUsuario, contraseña);
+        Gerente gerente = new Gerente(nombre, apellido, telefono, sueldo, rfc, INE, nombreUsuario, contraseña,fechaNacimiento);
         if (!usuarios.containsKey(Rol.GERENTE)) {
             usuarios.put(Rol.GERENTE, new ArrayList<Usuario>());
         }
         usuarios.get(Rol.GERENTE).add(gerente);
-        System.out.println("\n Cliente registrado exitosamente...");
+        System.out.println("\nGerente registrado exitosamente...");
     }
 
 

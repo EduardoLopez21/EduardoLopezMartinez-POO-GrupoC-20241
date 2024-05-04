@@ -16,8 +16,8 @@ public class Cliente extends Usuario {
     private LocalDate fechaRegistro; //Este tipo de datos manejan fechas (local)
     //retorna la fecha de hoy 2024-04-09
 
-    public Cliente(String nombre, String apellido, String telefono, String nombreUsuario, String contraseña) {
-        super(nombre, apellido, telefono, Rol.CLIENTE, nombreUsuario, contraseña);
+    public Cliente(String nombre, String apellido, String telefono, String nombreUsuario, String contraseña, String fechaNacimiento) {
+        super(nombre, apellido, telefono, Rol.CLIENTE, nombreUsuario, contraseña, fechaNacimiento);
         this.fechaRegistro = LocalDate.now(); //accede a la fecha actual
     }
 
@@ -37,8 +37,9 @@ public class Cliente extends Usuario {
         String telefono = datosComun.get(2);
         String nombreUsuario = datosComun.get(3);
         String contraseña = datosComun.get(4);
+        String fechaNacimiento = datosComun.get(5);
 
-        Cliente cliente = new Cliente(nombre, apellido, telefono, nombreUsuario, contraseña);
+        Cliente cliente = new Cliente(nombre, apellido, telefono, nombreUsuario, contraseña, fechaNacimiento);
 
         if (!usuarios.containsKey(Rol.CLIENTE)) {
             usuarios.put(Rol.CLIENTE, new ArrayList<Usuario>());

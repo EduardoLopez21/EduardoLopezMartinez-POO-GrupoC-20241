@@ -22,8 +22,8 @@ public class Asistente extends Usuario implements EmpleadoUtils {
     private double sueldo;
     private String rfc;
 
-    public Asistente(String nombre, String apellido, String telefono, double sueldo, String rfc, String nombreUsuario, String contraseña) {
-        super(nombre, apellido, telefono, Rol.ASISTENTE, nombreUsuario, contraseña);
+    public Asistente(String nombre, String apellido, String telefono, double sueldo, String rfc, String nombreUsuario, String contraseña, String fechaNacimiento) {
+        super(nombre, apellido, telefono, Rol.ASISTENTE, nombreUsuario, contraseña, fechaNacimiento);
         this.fechaInicio = LocalDate.now();
         this.sueldo = sueldo;
         this.rfc = rfc;
@@ -39,22 +39,21 @@ public class Asistente extends Usuario implements EmpleadoUtils {
     public static void registrarAsistentes() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\n Registrando Asistente");
-        ArrayList<String> datosComun = obtenerDatosComun(Rol.ASISTENTE);
+        ArrayList<String> datosComun = DatosComun.obtenerDatosComun(Rol.ASISTENTE);
         String nombre = datosComun.get(0);
         String apellido = datosComun.get(1);
         String telefono = datosComun.get(2);
         String nombreUsuario = datosComun.get(3);
         String contraseña = datosComun.get(4);
+        String fechaNacimiento = datosComun.get(5);
 
         System.out.print("Ingresa el sueldo: ");
         double sueldo = scanner.nextDouble();
-
         scanner.nextLine();
         System.out.print("Ingresa el RFC: ");
         String rfc = scanner.nextLine();
 
-
-        Asistente asistente = new Asistente(nombre, apellido, telefono, sueldo, rfc, nombreUsuario, contraseña);
+        Asistente asistente = new Asistente(nombre, apellido, telefono, sueldo, rfc, nombreUsuario, contraseña, fechaNacimiento);
         if (!usuarios.containsKey(Rol.ASISTENTE)) {
             usuarios.put(Rol.ASISTENTE, new ArrayList<Usuario>());
         }

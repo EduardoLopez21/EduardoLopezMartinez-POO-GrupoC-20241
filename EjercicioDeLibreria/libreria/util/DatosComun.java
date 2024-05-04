@@ -1,5 +1,7 @@
 package libreria.util;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import Usuarios.Usuario;
 import Usuarios.utils.Rol;
 import java.util.ArrayList;
@@ -14,19 +16,32 @@ public class DatosComun {
     public static ArrayList<String> obtenerDatosComun(Rol rol) {
         Scanner scanner = new Scanner(System.in);
         ArrayList<String> datosComun = new ArrayList<String>();
+
         String rolUsuario = rol == Rol.CLIENTE ? "CLIENTE" : rol == Rol.ASISTENTE ? "Asistente" : "Gerente";
         System.out.println(String.format("Bienvenido al registro del %s", rolUsuario));
-        System.out.print("\n Ingresa los siguientes datos para continuar");
-        System.out.print("\n Ingresa el nombre: ");
+        System.out.print("\nIngresa los siguientes datos para continuar");
+        System.out.print("\nIngresa el nombre: ");
         String nombre = scanner.nextLine();
         System.out.print("Ingresa los Apellidos: ");
         String apellido = scanner.nextLine();
         String telefono = registrarTelefonoUsuario();
         String nombreUsuario = registrarNombreUsuario();
+        scanner.nextLine(); // Limpiar el buffer del Scanner
         System.out.print("Ingresa tu contraseña: ");
         String contraseña = scanner.nextLine();
+        System.out.print("Ingresa tu día de nacimiento: ");
+        int dia = scanner.nextInt();
+        System.out.print("Ingresa tu mes de nacimiento (número): ");
+        int mes = scanner.nextInt();
+        System.out.print("Ingresa tu año de nacimiento: ");
+        int año = scanner.nextInt();
 
-        datosComun.addAll(Arrays.asList(nombre, apellido, telefono, nombreUsuario, contraseña));
+        // Formatear la fecha de nacimiento
+        LocalDate fechaNacimiento = LocalDate.of(año, mes, dia);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String fechaNacimientoFormateada = fechaNacimiento.format(formatter);
+
+        datosComun.addAll(Arrays.asList(nombre, apellido, telefono, nombreUsuario, contraseña, fechaNacimientoFormateada));
         return datosComun;
     }
 
@@ -40,7 +55,7 @@ public class DatosComun {
             telefono = scanner.nextLine();
 
             telefonoExistente = false;
-            for (ArrayList<Usuario> listaUsuarios : usuarios.values()) {
+            for (ArrayList<Usuario> listaUsuarios : Libreria.usuarios.values()) {
                 for (Usuario usuario : listaUsuarios) {
                     if (usuario.getTelefono().equals(telefono)) {
                         telefonoExistente = true;
@@ -48,9 +63,8 @@ public class DatosComun {
                     }
                 }
 
-
                 if (telefonoExistente) {
-                    System.out.println("\n El telefono ya se encuentra registrado. Intenta de nuevo.");
+                    System.out.println("\nEl telefono ya se encuentra registrado. Intenta de nuevo.");
                 }
             }
         } while (telefonoExistente);
@@ -68,7 +82,7 @@ public class DatosComun {
             nombreUsuario = scanner.nextLine();
 
             nombreUsuarioExistente = false;
-            for (ArrayList<Usuario> listaUsuarios : usuarios.values()) {
+            for (ArrayList<Usuario> listaUsuarios : Libreria.usuarios.values()) {
                 for (Usuario usuario : listaUsuarios) {
                     if (usuario.getNombreUsuario().equals(nombreUsuario)) {
                         nombreUsuarioExistente = true;
@@ -77,7 +91,7 @@ public class DatosComun {
                 }
 
                 if (nombreUsuarioExistente) {
-                    System.out.println("\n Ya existe un registro con ese nombre de usuario. Intenta de nuevo.");
+                    System.out.println("\nYa existe un registro con ese nombre de usuario. Intenta de nuevo.");
                 }
             }
         } while (nombreUsuarioExistente);
@@ -85,3 +99,4 @@ public class DatosComun {
         return nombreUsuario;
     }
 }
+

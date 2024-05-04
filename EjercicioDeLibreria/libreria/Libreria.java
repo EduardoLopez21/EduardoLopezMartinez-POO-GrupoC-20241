@@ -21,10 +21,10 @@ public class Libreria {
         usuarios.put(Rol.ASISTENTE, new ArrayList<>());
         usuarios.put(Rol.GERENTE, new ArrayList<>());
 
-        Asistente asistente = new Asistente("Juan", "Rivera", "443831893122", 15000, "RUJU231231", "juan123", "12345");
+        Asistente asistente = new Asistente("Juan", "Rivera", "443831893122", 15000, "RUJU231231", "juan123", "12345", "23/02/2004");
         usuarios.get(Rol.ASISTENTE).add(asistente);
 
-        Gerente gerente = new Gerente("Lalo", "Lopez", "4471178990", 20000, "LOME121590A1", "L2919OOME", "Lalito12", "12lolo");
+        Gerente gerente = new Gerente("Lalo", "Lopez", "4471178990", 20000, "LOME121590A1", "L2919OOME", "Lalito12", "12lolo", "02/03/2000");
         usuarios.get(Rol.GERENTE).add(gerente);
 
         this.librosRegistrados = new ArrayList<>();

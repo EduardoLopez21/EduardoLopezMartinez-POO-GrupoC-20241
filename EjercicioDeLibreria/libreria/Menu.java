@@ -7,6 +7,11 @@ import Usuarios.Usuario;
 import utils.UsuarioEnSesion;
 
 
+/*
+- Realizar el registro de cliente, registro de libros y consulta de clientes y libros
+- Opcional: Tratar de almacenar el usuario en sesion (UsuarioEnSesion) y verificar el comportamiento
+- Ahora tenemos que hacer todo con el HashMap y tambien ver que pedo con el login
+ */
 
 public class Menu {
 
