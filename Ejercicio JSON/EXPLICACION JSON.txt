@@ -1,0 +1,4 @@
+Lo que yo pude comprender del video es basicamente que es un formato de intercambio de datos que es bastante
+utilizado debido a que bastante ligero y rapido sirve para poder datos entre un servidor y un cliente en 
+aplicacion web. Este puede representar objetos con distintos tipos de atributos, ya sea enteros, cadenas, dobles,
+null, y booleanos, en resumen es un formato de intercambio de datos ligero y facil de usar.
