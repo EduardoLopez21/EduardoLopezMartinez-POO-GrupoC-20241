@@ -1,0 +1,28 @@
+{
+  "clientes": [
+    {
+      "fechaRegistro": "2024-05-19",
+      "nombre": "Lalo",
+      "apellido": "Lopez",
+      "telefono": "443213124",
+      "id": 3,
+      "rol": "CLIENTE",
+      "nombreUsuario": "lolo",
+      "contraseña": "12",
+      "fechaNacimiento": "12/04/2005"
+    },
+    {
+      "fechaRegistro": "2024-05-19",
+      "nombre": "aM",
+      "apellido": "ladwo",
+      "telefono": "3231290",
+      "id": 3,
+      "rol": "CLIENTE",
+      "nombreUsuario": "ldoaw",
+      "contraseña": "321312",
+      "fechaNacimiento": "12/12/2000"
+    }
+  ],
+  "asistentes": [],
+  "gerentes": []
+}

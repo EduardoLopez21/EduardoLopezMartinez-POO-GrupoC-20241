@@ -1,0 +1,26 @@
+{
+  "trabajadores": [
+    {
+      "id": "T1",
+      "nombre": "Lalo",
+      "telefono": "4423321312"
+    },
+    {
+      "id": "T2",
+      "nombre": "Milka",
+      "telefono": "4321323212"
+    }
+  ],
+  "estudiantes": [
+    {
+      "id": "1",
+      "nombre": "Juan",
+      "telefono": "4423290132"
+    },
+    {
+      "id": "2",
+      "nombre": "Pedrito",
+      "telefono": "432132"
+    }
+  ]
+}
